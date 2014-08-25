@@ -3,25 +3,11 @@
 
 #include "stdafx.h"
 #include "Header.h"
+#include "LuaFuns.h"
+#include "Common.h"
+#include "ServerObj.h"
 
 using namespace std;
-
-_LARGE_INTEGER& START_TIME()
-{
-	static _LARGE_INTEGER time_start;
-	QueryPerformanceCounter(&time_start);
-	return time_start;
-}
-
-const void PRINT_TIME(_LARGE_INTEGER time_start)
-{
-	LARGE_INTEGER f;
-	QueryPerformanceFrequency(&f);
-	_LARGE_INTEGER time_over;
-	QueryPerformanceCounter(&time_over);
-	cout << endl << "耗时：" << (time_over.QuadPart - time_start.QuadPart) / (double)f.QuadPart << "秒" << endl;
-	system("pause");
-}
 
 // 注册C写的Lua模块
 int lua_openScriptFuns(lua_State *L)
@@ -32,11 +18,11 @@ int lua_openScriptFuns(lua_State *L)
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	_LARGE_INTEGER time_start = START_TIME();
+	//_LARGE_INTEGER time_start = START_TIME();
 
-	lua_State * L = lua_open();
-	luaL_openlibs(L);
-	lua_openScriptFuns(L);
+	//lua_State * L = lua_open();
+	//luaL_openlibs(L);
+	//lua_openScriptFuns(L);
 
 	// 1、加载并运行整个文件
 	//cout << "按任意键重新加载和运行脚本（按‘.’结束程序）：" << endl;
@@ -55,11 +41,18 @@ int _tmain(int argc, _TCHAR* argv[])
 	//cout << lua_tointeger(L, -1) << endl;
 	//lua_pop(L, 1);
 
+	int nRetCode = 0;
+	ServerObj& g_ServerObj = ServerObj::getInstance(nRetCode);
+	if (nRetCode != enumServerStateOK)
+	{
+		g_ServerObj.UnInitialize();
+		return 1;
+	}
 
+	g_ServerObj.ThreadFunction();
 
-
-	lua_close(L);
-	PRINT_TIME(time_start);
+	/*lua_close(L);*/
+	/*PRINT_TIME(time_start);*/
 	return 0;
 }
 

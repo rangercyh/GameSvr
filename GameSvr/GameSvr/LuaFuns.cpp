@@ -1,6 +1,7 @@
 #include "stdafx.h"
-#include "Header.h"
+#include "LuaFuns.h"
 
+using namespace std;
 
 static int LuaTest(lua_State* L)
 {

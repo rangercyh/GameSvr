@@ -9,10 +9,7 @@
 #include <lua.hpp>
 #include <luaconf.h>
 #include <conio.h>
-
-
-
-extern const luaL_Reg ScriptFuns[];
+#include <windows.h>
 
 #endif // __HEAD__
 
