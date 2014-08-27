@@ -11,6 +11,7 @@ class ServerObj
 {
 private:
 	ServerObj();
+	ServerObj(const ServerObj&);
 	ServerObj& operator=(const ServerObj&);
 	~ServerObj();
 	/*ServerObj& GetServerObj();*/
